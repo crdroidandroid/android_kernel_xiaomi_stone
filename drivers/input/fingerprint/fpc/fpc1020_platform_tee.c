@@ -38,16 +38,10 @@
 #include <linux/pinctrl/consumer.h>
 #include <linux/pm_wakeup.h>
 #include <linux/fb.h>
-#include <drm/drm_notifier.h>
-#include <drm/drm_bridge.h>
-#if defined(CONFIG_BUILD_QGKI)
-extern int dsi_bridge_interface_enable(int timeout);
-#endif
 
 #define CONFIG_FPC_COMPAT 1
 #define FINGER_PWR_USE_GPIO 1
 #define FPC_TTW_HOLD_TIME 2000
-#define FP_UNLOCK_REJECTION_TIMEOUT (FPC_TTW_HOLD_TIME - 500)
 
 #define RESET_LOW_SLEEP_MIN_US 5000
 #define RESET_LOW_SLEEP_MAX_US (RESET_LOW_SLEEP_MIN_US + 100)
@@ -103,10 +97,6 @@ struct fpc1020_data {
 	bool compatible_enabled;
 #endif
 	atomic_t wakeup_enabled; /* Used both in ISR and non-ISR */
-	struct notifier_block fb_notifier;
-	bool fb_black;
-	bool wait_finger_down;
-	struct work_struct work;
 };
 
 static irqreturn_t fpc1020_irq_handler(int irq, void *handle);
@@ -526,25 +516,6 @@ static ssize_t irq_ack(struct device *dev,
 }
 static DEVICE_ATTR(irq, S_IRUSR | S_IWUSR, irq_get, irq_ack);
 
-static ssize_t fingerdown_wait_set(struct device *dev,
-				   struct device_attribute *attr,
-				   const char *buf, size_t count)
-{
-	struct fpc1020_data *fpc1020 = dev_get_drvdata(dev);
-
-	dev_info(fpc1020->dev, "%s -> %s\n", __func__, buf);
-	if (!strncmp(buf, "enable", strlen("enable")))
-		fpc1020->wait_finger_down = true;
-	else if (!strncmp(buf, "disable", strlen("disable")))
-		fpc1020->wait_finger_down = false;
-	else
-		return -EINVAL;
-
-	return count;
-}
-
-static DEVICE_ATTR(fingerdown_wait, S_IWUSR, NULL, fingerdown_wait_set);
-
 #ifdef CONFIG_FPC_COMPAT
 static ssize_t compatible_all_set(struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t count)
@@ -663,7 +634,6 @@ static struct attribute *attributes[] = {
 	&dev_attr_handle_wakelock.attr,
 	&dev_attr_clk_enable.attr,
 	&dev_attr_irq.attr,
-	&dev_attr_fingerdown_wait.attr,
 #ifdef CONFIG_FPC_COMPAT
 	&dev_attr_compatible_all.attr,
 #endif
@@ -673,14 +643,6 @@ static struct attribute *attributes[] = {
 static const struct attribute_group attribute_group = {
 	.attrs = attributes,
 };
-
-#if defined(CONFIG_BUILD_QGKI)
-static void notification_work(struct work_struct *work)
-{
-	pr_info("%s: unblank\n", __func__);
-	dsi_bridge_interface_enable(FP_UNLOCK_REJECTION_TIMEOUT);
-}
-#endif
 
 static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 {
@@ -699,14 +661,7 @@ static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 
 	sysfs_notify(&fpc1020->dev->kobj, NULL, dev_attr_irq.attr.name);
 
-	pr_info("%s %d,%d,%d",__func__,fpc1020->wait_finger_down,fpc1020->prepared,fpc1020->fb_black);
-	if (fpc1020->wait_finger_down && fpc1020->fb_black && fpc1020->prepared) {
-		pr_info("%s enter fingerdown & fb_black then schedule_work\n", __func__);
-		fpc1020->wait_finger_down = false;
-#if defined(CONFIG_BUILD_QGKI)
-		schedule_work(&fpc1020->work);
-#endif
-	}
+	pr_info("%s %d",__func__,fpc1020->prepared);
 
 	return IRQ_HANDLED;
 }
@@ -733,46 +688,6 @@ static int fpc1020_request_named_gpio(struct fpc1020_data *fpc1020,
 
 	return 0;
 }
-
-#if defined(CONFIG_BUILD_QGKI)
-static int fpc_fb_notif_callback(struct notifier_block *nb,
-				 unsigned long val, void *data)
-{
-	struct fpc1020_data *fpc1020 = container_of(nb, struct fpc1020_data,
-						    fb_notifier);
-	struct fb_event *evdata = data;
-	unsigned int blank;
-	pr_info("%s start\n", __func__);
-	if (!fpc1020)
-		return 0;
-
-	if (val != DRM_EVENT_BLANK || fpc1020->prepared == false)
-		return 0;
-
-	pr_info("%s value = %d\n", __func__, (int)val);
-
-	if (evdata && evdata->data && val == DRM_EVENT_BLANK) {
-		blank = *(int *)(evdata->data);
-		pr_info("%s blank = %d\n", __func__, (int)blank);
-		switch (blank) {
-		case DRM_BLANK_POWERDOWN:
-			fpc1020->fb_black = true;
-			break;
-		case DRM_BLANK_UNBLANK:
-			fpc1020->fb_black = false;
-			break;
-		default:
-			pr_info("%s defalut\n", __func__);
-			break;
-		}
-	}
-	return NOTIFY_OK;
-}
-
-static struct notifier_block fpc_notif_block = {
-	.notifier_call = fpc_fb_notif_callback,
-};
-#endif
 
 static int fpc1020_probe(struct platform_device *pdev)
 {
@@ -900,13 +815,6 @@ static int fpc1020_probe(struct platform_device *pdev)
 	}
 #endif
 	dev_info(dev, "%s: ok\n", __func__);
-	fpc1020->fb_black = false;
-	fpc1020->wait_finger_down = false;
-#if defined(CONFIG_BUILD_QGKI)
-	INIT_WORK(&fpc1020->work, notification_work);
-        fpc1020->fb_notifier = fpc_notif_block;
-	drm_register_client(&fpc1020->fb_notifier);
-#endif
 exit:
 	return rc;
 }
@@ -914,10 +822,6 @@ exit:
 static int fpc1020_remove(struct platform_device *pdev)
 {
 	struct fpc1020_data *fpc1020 = platform_get_drvdata(pdev);
-
-#if defined(CONFIG_BUILD_QGKI)
-	drm_unregister_client(&fpc1020->fb_notifier);
-#endif
 
 	sysfs_remove_group(&pdev->dev.kobj, &attribute_group);
 	mutex_destroy(&fpc1020->lock);
