@@ -94,5 +94,7 @@ alias of:N*T*Cqcom,sdhci-msm-v4 sdhci_msm
 alias of:N*T*Cqcom,sdhci-msm-v4C* sdhci_msm
 alias of:N*T*Cqcom,sdhci-msm-v5 sdhci_msm
 alias of:N*T*Cqcom,sdhci-msm-v5C* sdhci_msm
+alias of:N*T*Cqcom,sdm670-sdhci sdhci_msm
+alias of:N*T*Cqcom,sdm670-sdhciC* sdhci_msm
 alias of:N*T*Cqcom,sdm845-sdhci sdhci_msm
 alias of:N*T*Cqcom,sdm845-sdhciC* sdhci_msm
