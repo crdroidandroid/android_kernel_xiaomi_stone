@@ -1600,7 +1600,7 @@ static int rt1711_i2c_suspend(struct device *dev)
 {
 	struct rt1711_chip *chip = dev_get_drvdata(dev);
 
-	dev_err(dev, "%s\n", __func__);
+	dev_dbg(dev, "%s\n", __func__);
 	mutex_lock(&chip->irq_lock);
 	chip->is_suspended = true;
 	mutex_unlock(&chip->irq_lock);
@@ -1614,7 +1614,7 @@ static int rt1711_i2c_resume(struct device *dev)
 {
 	struct rt1711_chip *chip = dev_get_drvdata(dev);
 
-	dev_err(dev, "%s\n", __func__);
+	dev_dbg(dev, "%s\n", __func__);
 	mutex_lock(&chip->irq_lock);
 	if (chip->irq_while_suspended) {
 		enable_irq(chip->irq);
