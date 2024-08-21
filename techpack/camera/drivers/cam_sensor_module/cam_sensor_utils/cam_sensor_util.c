@@ -13,6 +13,11 @@
 #define CAM_SENSOR_PINCTRL_STATE_SLEEP "cam_suspend"
 #define CAM_SENSOR_PINCTRL_STATE_DEFAULT "cam_default"
 
+#if IS_ENABLED(CONFIG_LDO_WL2866D)
+extern int wl2866d_camera_power_up(int out_iotype);
+extern int wl2866d_camera_power_down(int out_iotype);
+#endif
+
 #define VALIDATE_VOLTAGE(min, max, config_val) ((config_val) && \
 	(config_val >= min) && (config_val <= max))
 
@@ -2246,6 +2251,18 @@ int cam_sensor_core_power_up(struct cam_sensor_power_ctrl_t *ctrl,
 				goto power_up_failed;
 			}
 			break;
+#if IS_ENABLED(CONFIG_LDO_WL2866D)
+		case SENSOR_WL2866D_DVDD1:
+		case SENSOR_WL2866D_DVDD2:
+		case SENSOR_WL2866D_AVDD1:
+		case SENSOR_WL2866D_AVDD2:
+			rc = wl2866d_camera_power_up(((int)power_setting->seq_type) - SENSOR_WL2866D_DVDD1);
+			if (rc < 0) {
+				CAM_ERR(CAM_SENSOR, "wl2866d_camera_power_up_io_type [%d] failed", power_setting->seq_type);
+				goto power_up_failed;
+			}
+			break;
+#endif
 		default:
 			CAM_ERR(CAM_SENSOR, "error power seq type %d",
 				power_setting->seq_type);
@@ -2527,6 +2544,18 @@ int cam_sensor_util_power_down(struct cam_sensor_power_ctrl_t *ctrl,
 				CAM_ERR(CAM_SENSOR,
 					"Error disabling VREG GPIO");
 			break;
+#if IS_ENABLED(CONFIG_LDO_WL2866D)
+		case SENSOR_WL2866D_DVDD1:
+		case SENSOR_WL2866D_DVDD2:
+		case SENSOR_WL2866D_AVDD1:
+		case SENSOR_WL2866D_AVDD2:
+			ret = wl2866d_camera_power_down(((int)pd->seq_type) - SENSOR_WL2866D_DVDD1);
+			if (ret < 0) {
+				CAM_ERR(CAM_SENSOR, "wl2866d_camera_power_down iotype [%d] failed", pd->seq_type);
+				break;
+			}
+			break;
+#endif
 		default:
 			CAM_ERR(CAM_SENSOR, "error power seq type %d",
 				pd->seq_type);
