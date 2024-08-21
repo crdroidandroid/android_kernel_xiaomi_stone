@@ -34,7 +34,6 @@
 *****************************************************************************/
 #include "focaltech_core.h"
 #include "focaltech_flash.h"
-#include <linux/hqsysfs.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -2142,9 +2141,6 @@ int fts_hw_info_add(struct fts_ts_data *ts_data)
 	}
 	FTS_INFO("read FW version:0x%02x", fw_version);
 	sprintf(tp_version_info, "[Vendor]Samsung [TP-IC]:FT3519T [FW]0x%x\n", fw_version);
-#ifdef CONFIG_BUILD_QGKI
-	hq_regiser_hw_info(HWID_CTP, tp_version_info);
-#endif
 	return 0;
 }
 int fts_fwupg_init(struct fts_ts_data *ts_data)
