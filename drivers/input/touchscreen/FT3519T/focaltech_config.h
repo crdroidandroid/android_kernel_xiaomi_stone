@@ -249,7 +249,7 @@
  * Production test enable
  * 1: enable, 0:disable(default)
  */
-#define FTS_TEST_EN							 1
+#define FTS_TEST_EN							 0
 
 /*
  * Pinctrl enable
@@ -285,7 +285,7 @@
 /*
  * TP SELFTEST
  */
-#define	FTS_TP_SELFTEST	                        1
+#define	FTS_TP_SELFTEST	                        0
 
 /*
  * module_id: mean vendor_id generally, also maybe gpio or lcm_id...
