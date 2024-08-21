@@ -1593,7 +1593,11 @@ static const struct msm_pingroup blair_groups[] = {
 };
 
 static const int blair_reserved_gpios[] = {
+#ifdef CONFIG_HQ_QGKI
+	13, 14, 15, 16, -1
+#else
 	13, 14, 15, 16, 17, 45, 46, 48, 56, 57, -1
+#endif
 };
 
 static const struct msm_gpio_wakeirq_map blair_mpm_map[] = {
