@@ -43,9 +43,6 @@
 #if defined(CONFIG_BUILD_QGKI)
 extern int dsi_bridge_interface_enable(int timeout);
 #endif
-#ifdef CONFIG_HQ_SYSFS_SUPPORT
-#include <linux/hqsysfs.h>
-#endif
 
 #define CONFIG_FPC_COMPAT 1
 #define FINGER_PWR_USE_GPIO 1
@@ -892,12 +889,6 @@ static int fpc1020_probe(struct platform_device *pdev)
 	}
 #else
 	mutex_init(&fpc1020->lock);
-/* BSP.FP - 2022.6.19 - fpc HWID_FP add statrt*/
-#ifdef CONFIG_HQ_SYSFS_SUPPORT
-		dev_info(dev, "%s hq_regiser_hw_info\n", __func__);
-		hq_regiser_hw_info(HWID_FP, "FPC");
-#endif
-/* BSP.FP - 2022.6.19 - fpc HWID_FP add end*/
 	fpc1020->ttw_wl = wakeup_source_register(dev, "fpc_ttw_wl");
 	if (!fpc1020->ttw_wl)
 		return -ENOMEM;
