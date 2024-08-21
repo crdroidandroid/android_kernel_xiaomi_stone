@@ -1836,6 +1836,17 @@ config DMI
 
 endmenu
 
+config BUILD_QGKI
+        bool "QGKI build"
+        help
+          Enable general changes for QGKI.
+
+config HQ_QGKI
+        bool "HQ QGKI build"
+        select BUILD_QGKI
+        help
+          Enable Huaqin changes for QGKI.
+
 choice
 	prompt "Kernel compression method"
 	default BUILD_ARM64_KERNEL_COMPRESSION_GZIP
