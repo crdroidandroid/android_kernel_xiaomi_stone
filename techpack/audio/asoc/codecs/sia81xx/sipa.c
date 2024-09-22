@@ -2506,6 +2506,9 @@ int sipa_i2c_probe(
 
 	sipa_compatible_chips_adapt(si_pa);
 
+	/* load firmware */
+	sipa_param_load_fw(&client->dev);
+
 	/* lct_audio add begin */
 	g_wcd937x_sia_dev = si_pa;
 	/* lct_audio add end */
@@ -2893,8 +2896,6 @@ static int sipa_probe(struct platform_device *pdev)
 	si_pa->sia91xx_wq = create_singlethread_workqueue(work_name);
 	if (!si_pa->sia91xx_wq)
 		return -ENOMEM;
-	/* load firmware */
-	sipa_param_load_fw(&pdev->dev);
 
 out:
 	if (0 == disable_pin) {
