@@ -1690,52 +1690,6 @@ static ssize_t sipa_cmd_store(
 /********************************************************************
  * si_pa codec driver
  ********************************************************************/
-static int sipa_power_get(
-	struct snd_kcontrol *kcontrol,
-	struct snd_ctl_elem_value *ucontrol)
-{
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(4, 16, 28))
-	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-	sipa_dev_t *si_pa = snd_soc_component_get_drvdata(component);
-#else
-	struct snd_soc_codec *codec = snd_soc_kcontrol_codec(kcontrol);
-	sipa_dev_t *si_pa = snd_soc_codec_get_drvdata(codec);
-#endif
-
-	ucontrol->value.integer.value[0] =
-		(unsigned long)sipa_is_chip_en(si_pa);
-
-	pr_debug("[debug][%s] %s: ucontrol = %ld, channel_num = %d \r\n",
-		LOG_FLAG, __func__, ucontrol->value.integer.value[0], si_pa->channel_num);
-
-	return 0;
-}
-
-static int sipa_power_set(
-	struct snd_kcontrol *kcontrol,
-	struct snd_ctl_elem_value *ucontrol)
-{
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(4, 16, 28))
-	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
-    sipa_dev_t *si_pa = snd_soc_component_get_drvdata(component);
-#else
-	struct snd_soc_codec *codec = snd_soc_kcontrol_codec(kcontrol);
-	sipa_dev_t *si_pa = snd_soc_codec_get_drvdata(codec);
-#endif
-
-	pr_debug("[debug][%s] %s: ucontrol = %ld, rst = %d, channel_num = %d \r\n",
-		LOG_FLAG, __func__, ucontrol->value.integer.value[0],
-		si_pa->rst_pin, si_pa->channel_num);
-
-	if (1 == ucontrol->value.integer.value[0]) {
-		sipa_resume(si_pa);
-	} else {
-		sipa_suspend(si_pa);
-	}
-
-	return 0;
-}
-
 static int sipa_audio_scene_get(
 	struct snd_kcontrol *kcontrol,
 	struct snd_ctl_elem_value *ucontrol)
@@ -1840,14 +1794,11 @@ static int sipa_algo_en_set(
 }
 #endif
 
-static const char *const power_function[] = { "Off", "On" };
 #ifdef ALGO_SWITCH_EN
 static const char *const algo_enable[] = { "Off", "On" };
 #endif
 static const char *const audio_scene[] = { "Playback", "Voice", "Receiver", "Factory" };
 
-static const struct soc_enum power_enum =
-	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(power_function), power_function);
 #ifdef ALGO_SWITCH_EN
 static const struct soc_enum algo_enum =
 	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(algo_enable), algo_enable);
@@ -1857,8 +1808,6 @@ static const struct soc_enum audio_scene_enum =
 
 static const struct snd_kcontrol_new sipa_controls[] = {
 
-	SOC_ENUM_EXT("Sipa Power", power_enum,
-			sipa_power_get, sipa_power_set),
 #ifdef ALGO_SWITCH_EN
 	SOC_ENUM_EXT("Sipa Algo", algo_enum,
 			sipa_algo_en_get, sipa_algo_en_set),
