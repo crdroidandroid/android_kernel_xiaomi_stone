@@ -54,7 +54,6 @@ COMMON_DIR :=	include
 COMMON_INC :=	-I$(AUDIO_ROOT)/$(COMMON_DIR)
 
 ############ sia81xx ############
-COMPILE_TO_MODULE = y
 EN_SIPA_TUNING = n
 DEVICE_TYPE_DIGITAL = n
 PLATFORM_TYPE = mtk
@@ -100,7 +99,7 @@ ifeq ($(PLATFORM_TYPE),mtk)
 SIA81XX_OBJS += sipa_tuning_if_dev.o
 endif
 
-ifeq ($(COMPILE_TO_MODULE),y)
+ifeq ($(CONFIG_SND_SOC_SIA81XX),m)
 EXTRA_CFLAGS += -DSIPA_COMPILE_TO_MODULE
 endif
 
