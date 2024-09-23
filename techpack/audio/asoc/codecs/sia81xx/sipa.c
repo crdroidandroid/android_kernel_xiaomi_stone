@@ -210,6 +210,10 @@ static const char *support_chip_type_name_table[] = {
 
 static sipa_dev_t *g_default_sia_dev;
 
+/* lct_audio add begin */
+static sipa_dev_t *g_wcd937x_sia_dev;
+/* lct_audio add end */
+
 static int sipa_resume(
 	struct sipa_dev_s *si_pa);
 static int sipa_suspend(
@@ -1005,6 +1009,20 @@ static int sipa_suspend(
 
 	return 0;
 }
+
+/* lct_audio add begin */
+int wcd937x_sia81xx_resume(void)
+{
+	return sipa_resume(g_wcd937x_sia_dev);
+}
+EXPORT_SYMBOL(wcd937x_sia81xx_resume);
+
+int wcd937x_sia81xx_suspend(void)
+{
+	return sipa_suspend(g_wcd937x_sia_dev);
+}
+EXPORT_SYMBOL(wcd937x_sia81xx_suspend);
+/* lct_audio add end */
 
 static int sipa_reboot(
 	struct sipa_dev_s *si_pa)
@@ -2487,6 +2505,10 @@ int sipa_i2c_probe(
 		g_default_sia_dev = si_pa;
 
 	sipa_compatible_chips_adapt(si_pa);
+
+	/* lct_audio add begin */
+	g_wcd937x_sia_dev = si_pa;
+	/* lct_audio add end */
 
 #ifdef SIA91XX_TYPE
 	ret = sia91xx_detect_chip(si_pa);
