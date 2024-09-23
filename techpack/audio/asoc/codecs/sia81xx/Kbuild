@@ -61,6 +61,7 @@ EXTRA_CFLAGS += $(call cc-option,-Wno-date-time,)
 
 ifeq ($(DEVICE_TYPE_DIGITAL),y)
 EXTRA_CFLAGS += -DSIA91XX_TYPE
+SIA81XX_OBJS += sia91xx_common.o
 
 ifeq ($(PLATFORM_TYPE),mtk)
 EXTRA_CFLAGS += -DPLATFORM_TYPE_MTK
@@ -79,7 +80,6 @@ ifdef CONFIG_SND_SOC_SIA81XX
 	SIA81XX_OBJS += sipa_regmap.o
 	SIA81XX_OBJS += sipa_aux_dev_if.o
 	SIA81XX_OBJS += sipa_set_vdd.o
-	SIA81XX_OBJS += sia91xx_common.o
 	SIA81XX_OBJS += sipa_parameter.o
 	SIA81XX_OBJS += sipa_tuning_cmd.o
 	SIA81XX_OBJS += sipa_cal_spk.o
