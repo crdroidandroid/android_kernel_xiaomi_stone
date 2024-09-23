@@ -56,7 +56,7 @@ COMMON_INC :=	-I$(AUDIO_ROOT)/$(COMMON_DIR)
 ############ sia81xx ############
 EN_SIPA_TUNING = n
 DEVICE_TYPE_DIGITAL = n
-PLATFORM_TYPE = mtk
+PLATFORM_TYPE = qcom
 EXTRA_CFLAGS += $(call cc-option,-Wno-date-time,)
 
 ifeq ($(DEVICE_TYPE_DIGITAL),y)
