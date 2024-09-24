@@ -66,3 +66,4 @@ obj-$(CONFIG_PROFILER)			+= profiler.o
 obj-$(CONFIG_WIGIG_SENSING_SPI)	+= wigig_sensing.o
 obj-$(CONFIG_HISI_HIKEY_USB)	+= hisi_hikey_usb.o
 obj-$(CONFIG_LDO_WL2866D)	+= wl2866d.o
+obj-$(CONFIG_HQ_SYSFS_SUPPORT)	+= hqsysfs.o

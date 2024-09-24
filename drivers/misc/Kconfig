@@ -529,6 +529,11 @@ config LDO_WL2866D
 	help
 	  This option enables multi ldo wl2866d
 
+config HQ_SYSFS_SUPPORT
+	bool "Enable Huaqin Sysfs Driver"
+	help
+	  Huaqin Sysfs information driver includes specific information about hardware info and other info for HQ tools
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
