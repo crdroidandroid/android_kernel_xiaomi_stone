@@ -715,6 +715,12 @@ config CHARGER_BD70528
 	 information and altering charger configurations from charger
 	 block of the ROHM BD70528 Power Management IC.
 
+config HQ_CHARGER_MANAGER
+	tristate "hq charger manager"
+	default n
+	help
+	 Say Y enable hq charger manager
+
 config CHARGER_WILCO
 	tristate "Wilco EC based charger for ChromeOS"
 	depends on WILCO_EC
