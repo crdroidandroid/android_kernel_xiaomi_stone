@@ -610,6 +610,15 @@ config CHARGER_BQ25890
 	help
 	  Say Y to enable support for the TI BQ25890 battery charger.
 
+config CHARGER_LN8000
+	tristate "LN8000 Divider Charger Driver"
+	depends on I2C
+	default n
+	help
+	  Say Y here to enable support of ln8000 divider charger
+	  It is mainly used as divider charger for
+	  direct charge
+
 config CHARGER_SMB347
 	tristate "Summit Microelectronics SMB347 Battery Charger"
 	depends on I2C
