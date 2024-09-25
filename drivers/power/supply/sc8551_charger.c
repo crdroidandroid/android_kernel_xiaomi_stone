@@ -360,7 +360,7 @@ out:
 	return ret;
 }
 
-static int sc8551_enable_charge(struct sc8551 *sc, bool enable)
+int sc8551_enable_charge(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -399,7 +399,7 @@ static int sc8551_check_charge_enabled(struct sc8551 *sc, bool *enable)
 	return ret;
 }
 
-static int sc8551_enable_wdt(struct sc8551 *sc, bool enable)
+int sc8551_enable_wdt(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -431,7 +431,7 @@ static int sc8551_set_reg_reset(struct sc8551 *sc)
 	return ret;
 }
 
-static int sc8551_enable_batovp(struct sc8551 *sc, bool enable)
+int sc8551_enable_batovp(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -449,7 +449,7 @@ static int sc8551_enable_batovp(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_batovp);
 
-static int sc8551_set_batovp_th(struct sc8551 *sc, int threshold)
+int sc8551_set_batovp_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -467,7 +467,7 @@ static int sc8551_set_batovp_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_batovp_th);
 
-static int sc8551_enable_batovp_alarm(struct sc8551 *sc, bool enable)
+int sc8551_enable_batovp_alarm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -485,7 +485,7 @@ static int sc8551_enable_batovp_alarm(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_batovp_alarm);
 
-static int sc8551_set_batovp_alarm_th(struct sc8551 *sc, int threshold)
+int sc8551_set_batovp_alarm_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -503,7 +503,7 @@ static int sc8551_set_batovp_alarm_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_batovp_alarm_th);
 
-static int sc8551_enable_batocp(struct sc8551 *sc, bool enable)
+int sc8551_enable_batocp(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -521,7 +521,7 @@ static int sc8551_enable_batocp(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_batocp);
 
-static int sc8551_set_batocp_th(struct sc8551 *sc, int threshold)
+int sc8551_set_batocp_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -539,7 +539,7 @@ static int sc8551_set_batocp_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_batocp_th);
 
-static int sc8551_enable_batocp_alarm(struct sc8551 *sc, bool enable)
+int sc8551_enable_batocp_alarm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -557,7 +557,7 @@ static int sc8551_enable_batocp_alarm(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_batocp_alarm);
 
-static int sc8551_set_batocp_alarm_th(struct sc8551 *sc, int threshold)
+int sc8551_set_batocp_alarm_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -575,7 +575,7 @@ static int sc8551_set_batocp_alarm_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_batocp_alarm_th);
 
-static int sc8551_set_busovp_th(struct sc8551 *sc, int threshold)
+int sc8551_set_busovp_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -593,7 +593,7 @@ static int sc8551_set_busovp_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_busovp_th);
 
-static int sc8551_enable_busovp_alarm(struct sc8551 *sc, bool enable)
+int sc8551_enable_busovp_alarm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -611,7 +611,7 @@ static int sc8551_enable_busovp_alarm(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_busovp_alarm);
 
-static int sc8551_set_busovp_alarm_th(struct sc8551 *sc, int threshold)
+int sc8551_set_busovp_alarm_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -629,7 +629,7 @@ static int sc8551_set_busovp_alarm_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_busovp_alarm_th);
 
-static int sc8551_enable_busocp(struct sc8551 *sc, bool enable)
+int sc8551_enable_busocp(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -647,7 +647,7 @@ static int sc8551_enable_busocp(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_busocp);
 
-static int sc8551_set_busocp_th(struct sc8551 *sc, int threshold)
+int sc8551_set_busocp_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -665,7 +665,7 @@ static int sc8551_set_busocp_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_busocp_th);
 
-static int sc8551_enable_busocp_alarm(struct sc8551 *sc, bool enable)
+int sc8551_enable_busocp_alarm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -683,7 +683,7 @@ static int sc8551_enable_busocp_alarm(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_busocp_alarm);
 
-static int sc8551_set_busocp_alarm_th(struct sc8551 *sc, int threshold)
+int sc8551_set_busocp_alarm_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -701,7 +701,7 @@ static int sc8551_set_busocp_alarm_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_busocp_alarm_th);
 
-static int sc8551_enable_batucp_alarm(struct sc8551 *sc, bool enable)
+int sc8551_enable_batucp_alarm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -719,7 +719,7 @@ static int sc8551_enable_batucp_alarm(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_batucp_alarm);
 
-static int sc8551_set_batucp_alarm_th(struct sc8551 *sc, int threshold)
+int sc8551_set_batucp_alarm_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -737,7 +737,7 @@ static int sc8551_set_batucp_alarm_th(struct sc8551 *sc, int threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_batucp_alarm_th);
 
-static int sc8551_set_acovp_th(struct sc8551 *sc, int threshold)
+int sc8551_set_acovp_th(struct sc8551 *sc, int threshold)
 {
 	int ret;
 	u8 val;
@@ -797,7 +797,7 @@ static int sc8551_set_vdrop_deglitch(struct sc8551 *sc, int us)
 	return ret;
 }
 
-static int sc8551_enable_bat_therm(struct sc8551 *sc, bool enable)
+int sc8551_enable_bat_therm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -818,7 +818,7 @@ EXPORT_SYMBOL_GPL(sc8551_enable_bat_therm);
 /*
  * the input threshold is the raw value that would write to register directly.
  */
-static int sc8551_set_bat_therm_th(struct sc8551 *sc, u8 threshold)
+int sc8551_set_bat_therm_th(struct sc8551 *sc, u8 threshold)
 {
 	int ret;
 
@@ -827,7 +827,7 @@ static int sc8551_set_bat_therm_th(struct sc8551 *sc, u8 threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_bat_therm_th);
 
-static int sc8551_enable_bus_therm(struct sc8551 *sc, bool enable)
+int sc8551_enable_bus_therm(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -848,7 +848,7 @@ EXPORT_SYMBOL_GPL(sc8551_enable_bus_therm);
 /*
  * the input threshold is the raw value that would write to register directly.
  */
-static int sc8551_set_bus_therm_th(struct sc8551 *sc, u8 threshold)
+int sc8551_set_bus_therm_th(struct sc8551 *sc, u8 threshold)
 {
 	int ret;
 
@@ -860,7 +860,7 @@ EXPORT_SYMBOL_GPL(sc8551_set_bus_therm_th);
 /*
  * please be noted that the unit here is degC
  */
-static int sc8551_set_die_therm_th(struct sc8551 *sc, u8 threshold)
+int sc8551_set_die_therm_th(struct sc8551 *sc, u8 threshold)
 {
 	int ret;
 	u8 val;
@@ -875,7 +875,7 @@ static int sc8551_set_die_therm_th(struct sc8551 *sc, u8 threshold)
 }
 EXPORT_SYMBOL_GPL(sc8551_set_die_therm_th);
 
-static int sc8551_enable_adc(struct sc8551 *sc, bool enable)
+int sc8551_enable_adc(struct sc8551 *sc, bool enable)
 {
 	int ret;
 	u8 val;
@@ -893,7 +893,7 @@ static int sc8551_enable_adc(struct sc8551 *sc, bool enable)
 }
 EXPORT_SYMBOL_GPL(sc8551_enable_adc);
 
-static int sc8551_set_adc_scanrate(struct sc8551 *sc, bool oneshot)
+int sc8551_set_adc_scanrate(struct sc8551 *sc, bool oneshot)
 {
 	int ret;
 	u8 val;
@@ -912,7 +912,7 @@ static int sc8551_set_adc_scanrate(struct sc8551 *sc, bool oneshot)
 EXPORT_SYMBOL_GPL(sc8551_set_adc_scanrate);
 
 #define ADC_REG_BASE SC8551_REG_16
-static int sc8551_get_adc_data(struct sc8551 *sc, int channel,  int *result)
+int sc8551_get_adc_data(struct sc8551 *sc, int channel,  int *result)
 {
 	int ret;
 	u8 val_l, val_h;
@@ -974,7 +974,7 @@ static int sc8551_set_adc_scan(struct sc8551 *sc, int channel, bool enable)
 	return ret;
 }
 
-static int sc8551_set_alarm_int_mask(struct sc8551 *sc, u8 mask)
+int sc8551_set_alarm_int_mask(struct sc8551 *sc, u8 mask)
 {
 	int ret;
 	u8 val;
