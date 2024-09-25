@@ -509,7 +509,7 @@ static int do_msm_restart(struct notifier_block *unused, unsigned long action,
 	return NOTIFY_DONE;
 }
 
-static void do_msm_poweroff(void)
+void do_msm_poweroff(void)
 {
 	pr_notice("Powering off the SoC\n");
 
@@ -521,6 +521,7 @@ static void do_msm_poweroff(void)
 	msleep(10000);
 	pr_err("Powering off has failed\n");
 }
+EXPORT_SYMBOL(do_msm_poweroff);
 
 static int msm_restart_probe(struct platform_device *pdev)
 {
