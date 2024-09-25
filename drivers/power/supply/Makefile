@@ -85,6 +85,7 @@ obj-$(CONFIG_CHARGER_BQ25890)	+= bq25890_charger.o
 obj-$(CONFIG_CHARGER_SC8551)	+= sc8551_charger.o
 obj-$(CONFIG_CHARGER_LN8000)	+= ln8000_charger.o
 obj-$(CONFIG_CHARGER_PD_MANAGER)	+= pd_policy_manager.o
+obj-$(CONFIG_SM5602_FG)		+= sm5602_fg.o
 obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
 obj-$(CONFIG_CHARGER_TPS65090)	+= tps65090-charger.o
 obj-$(CONFIG_CHARGER_TPS65217)	+= tps65217_charger.o

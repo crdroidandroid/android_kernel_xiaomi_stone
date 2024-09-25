@@ -636,6 +636,12 @@ config CHARGER_PD_MANAGER
 	  It is mainly used as divider charger for
 	  direct charge
 
+config SM5602_FG
+	tristate "sm5602 fg"
+	default n
+	help
+	  Say Y to enable support for SM5602 fuel gauge
+
 config CHARGER_SMB347
 	tristate "Summit Microelectronics SMB347 Battery Charger"
 	depends on I2C
