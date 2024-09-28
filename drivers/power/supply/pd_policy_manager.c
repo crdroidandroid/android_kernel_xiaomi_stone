@@ -825,7 +825,7 @@ static int  get_batt_temp_thermal_curr(struct usbpd_pm *pdpm)
     if (!ret)
         pdpm->therm_curr = thermal_mitigation[val.intval]/1000;
 
-        return 0;
+    return 0;
 }
 
 extern int get_usbpd_verifed_state(void);
@@ -1269,7 +1269,7 @@ static void usbpd_pd_contact(struct usbpd_pm *pdpm, bool connected)
             schedule_delayed_work(&pdpm->pm_work, 0);
         else
             pdpm->pd_active = false;
-            power_supply_changed(pdpm->usb_psy);
+        power_supply_changed(pdpm->usb_psy);
     } else {
         usbpd_pm_disconnect(pdpm);
     }
