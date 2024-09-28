@@ -407,7 +407,7 @@ static int fg_read_soc(struct sm_fg_chip *sm)
 static int fg_read_uisoc(struct sm_fg_chip *sm)
 {
 	int uisoc;
-	static old_uisoc = 0;
+	static int old_uisoc = 0;
 	int rsoc = 0;
 
 	rsoc = fg_read_soc(sm);
