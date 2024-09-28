@@ -1098,14 +1098,14 @@ static irqreturn_t bq25890_irq_handler_thread(int irq, void *private)
 		power_supply_changed(bq->usb);
 		if (IS_ERR(bq->usb)) {
 			pr_err("Cannot get bq->usb,err_line=%d\n", __LINE__);
-			PTR_ERR(bq->usb);
+			//PTR_ERR(bq->usb);
 		}
 	}
 	if (bq->charger) {
 		power_supply_changed(bq->charger);
 		if (IS_ERR(bq->charger)) {
 			pr_err("Cannot get bq->charger,err_line=%d\n", __LINE__);
-			PTR_ERR(bq->charger);
+			//PTR_ERR(bq->charger);
 		}
 	}
 	dev_err(bq->dev, "power_supply_changed usb bq->charger\n");
@@ -1593,7 +1593,7 @@ static void bq25890_usb_work(struct work_struct *data)
 			power_supply_changed(bq->charger);
 			if (IS_ERR(bq->charger)) {
 				pr_err("Cannot get bq->charger,err_line=%d\n", __LINE__);
-				PTR_ERR(bq->charger);
+				//PTR_ERR(bq->charger);
 			}
 		}
 		break;
@@ -2733,7 +2733,7 @@ static int bq25890_resume(struct device *dev)
 		power_supply_changed(bq->charger);
 		if (IS_ERR(bq->charger)) {
 			pr_err("Cannot get bq->charger,err_line=%d\n", __LINE__);
-			PTR_ERR(bq->charger);
+			//PTR_ERR(bq->charger);
 		}
 	}
 
