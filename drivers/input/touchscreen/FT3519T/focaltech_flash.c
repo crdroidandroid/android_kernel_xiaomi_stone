@@ -1919,7 +1919,7 @@ int lct_get_lockdown_info(void)
 	if (ret)
 		FTS_ERROR("lockdown info read error");
 
-	snprintf(tp_lockdown_info_buf, PAGE_SIZE, "%02x%02x%02x%02x%02x%02x%02x%02x\n",
+	snprintf(tp_lockdown_info_buf, sizeof(tp_lockdown_info_buf), "%02x%02x%02x%02x%02x%02x%02x%02x\n",
 			lockdown_values[0], lockdown_values[1], lockdown_values[2], lockdown_values[3],
 			lockdown_values[4], lockdown_values[5], lockdown_values[6], lockdown_values[7]);
 	//update_lct_tp_info(NULL, tp_lockdown_info_buf);
