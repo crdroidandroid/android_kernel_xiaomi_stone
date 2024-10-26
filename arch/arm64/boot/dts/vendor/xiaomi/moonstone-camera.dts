@@ -1,0 +1,234 @@
+&ope {
+	clock-rates =
+		<171428571 0 580000000 0>,
+		<171428571 0 580000000 0>,
+		<240000000 0 580000000 0>,
+		<240000000 0 580000000 0>;
+};
+
+&soc {
+	cam_vaf_ldo: gpio-regulator@0 {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		reg = <0x0 0x0>;
+		regulator-enable-ramp-delay = <135>;
+		regulator-max-microvolt = <2800000>;
+		regulator-min-microvolt = <2800000>;
+		regulator-name = "cam_vaf_ldo";
+	};
+};
+
+&actuator_rear {
+	cam_vaf-supply = <&cam_vaf_ldo>;
+	gpio-req-tbl-flags = <0>;
+	gpio-req-tbl-label = "CAM_VAF0";
+	gpio-req-tbl-num = <0>;
+	gpio-reset = <0x0>;
+	gpios = <&tlmm 50 0>;
+};
+
+&eeprom_rear {
+	/delete-property/ cam_vaf-supply;
+	/delete-property/ cam_vana-supply;
+	/delete-property/ cam_vdig-supply;
+	/delete-property/ cam_vio-supply;
+
+	gpio-custom1 = <2>;
+	gpio-req-tbl-flags = <1 0 0>;
+	gpio-req-tbl-label = "CAMIF_MCLK0", "CAM_RESET0", "CAM_VIO0";
+	gpio-req-tbl-num = <0 1 2>;
+	gpios = <&tlmm 29 0>,
+		<&tlmm 34 0>,
+		<&tlmm 38 0>;
+	regulator-names = "cam_clk";
+	rgltr-load-current = <0>;
+	rgltr-max-voltage = <0>;
+	rgltr-min-voltage = <0>;
+};
+
+&eeprom_rear_aux2 {
+	/delete-property/ cam_vaf-supply;
+	/delete-property/ cam_vana-supply;
+	/delete-property/ cam_vdig-supply;
+	/delete-property/ cam_vio-supply;
+
+	gpio-custom1 = <2>;
+	gpio-req-tbl-flags = <1 0 0>;
+	gpio-req-tbl-label = "CAMIF_MCLK1", "CAM_RESET1", "CAM_VIO1";
+	gpio-req-tbl-num = <0 1 2>;
+	gpios = <&tlmm 30 0>,
+		<&tlmm 35 0>,
+		<&tlmm 38 0>;
+	regulator-names = "cam_clk";
+	rgltr-load-current = <0>;
+	rgltr-max-voltage = <0>;
+	rgltr-min-voltage = <0>;
+
+};
+
+&led_flash_rear {
+	cam_vio-supply;
+	gpio-custom2 = <0>;
+	gpio-req-tbl-flags = <0 0>;
+	gpio-req-tbl-label = "CUSTOM_GPIO1", "CUSTOM_GPIO2";
+	gpio-req-tbl-num = <0 1>;
+	gpios = <&tlmm 38 0>,
+		<&tlmm 51 0>;
+};
+
+&led_flash_rear_aux {
+	cam_vio-supply;
+	gpio-custom2 = <0>;
+	gpio-req-tbl-flags = <0 0>;
+	gpio-req-tbl-label = "CUSTOM_GPIO1", "CUSTOM_GPIO2";
+	gpio-req-tbl-num = <0 1>;
+	gpios = <&tlmm 38 0>,
+		<&tlmm 51 0>;
+};
+
+&led_flash_rear_aux2 {
+	cam_vio-supply;
+	gpio-custom2 = <0>;
+	gpio-req-tbl-flags = <0 0>;
+	gpio-req-tbl-label = "CUSTOM_GPIO1", "CUSTOM_GPIO2";
+	gpio-req-tbl-num = <0 1>;
+	gpios = <&tlmm 38 0>,
+		<&tlmm 51 0>;
+};
+
+&cam_cci0 {
+	/delete-node/ qcom,cam-tpg0;
+	/delete-node/ qcom,cam-tpg1;
+	/delete-node/ qcom,cam-tpg2;
+
+	qcom,cam-sensor0 {
+		/delete-property/ cam_vaf-supply;
+		/delete-property/ cam_vana-supply;
+		/delete-property/ cam_vdig-supply;
+		/delete-property/ cam_vio-supply;
+
+		gpio-custom1 = <2>;
+		gpio-req-tbl-flags = <1 0 0>;
+		gpio-req-tbl-label = "CAMIF_MCLK0", "CAM_RESET0", "CAM_VIO0";
+		gpio-req-tbl-num = <0 1 2>;
+		gpios = <&tlmm 29 0>,
+			<&tlmm 34 0>,
+			<&tlmm 38 0>;
+		regulator-names = "cam_clk";
+		rgltr-load-current = <0>;
+		rgltr-max-voltage = <0>;
+		rgltr-min-voltage = <0>;
+		sensor-position-roll = <90>;
+	};
+
+	qcom,cam-sensor3 {
+		/delete-property/ cam_vana-supply;
+		/delete-property/ cam_vdig-supply;
+		/delete-property/ cam_vio-supply;
+
+		gpio-custom1 = <2>;
+		gpio-req-tbl-flags = <1 0 0>;
+		gpio-req-tbl-label = "CAMIF_MCLK1", "CAM_RESET1", "CAM_VIO1";
+		gpio-req-tbl-num = <0 1 2>;
+		gpios = <&tlmm 30 0>,
+			<&tlmm 35 0>,
+			<&tlmm 38 0>;
+		regulator-names = "cam_clk";
+		rgltr-load-current = <0>;
+		rgltr-max-voltage = <0>;
+		rgltr-min-voltage = <0>;
+		sensor-position-roll = <90>;
+	};
+};
+
+/delete-node/ &actuator_rear_aux;
+
+&eeprom_front {
+	/delete-property/ cam_vana-supply;
+	/delete-property/ cam_vdig-supply;
+	/delete-property/ cam_vio-supply;
+
+	gpio-custom1 = <2>;
+	gpio-req-tbl-flags = <1 0 0>;
+	gpio-req-tbl-label = "CAMIF_MCLK3", "CAM_RESET3", "CAM_VIO";
+	gpio-req-tbl-num = <0 1 2>;
+	gpios = <&tlmm 32 0>,
+		<&tlmm 37 0>,
+		<&tlmm 38 0>;
+	regulator-names = "cam_clk";
+	rgltr-load-current = <0>;
+	rgltr-max-voltage = <0>;
+	rgltr-min-voltage = <0>;
+};
+
+&eeprom_rear_aux {
+	/delete-property/ cam_vaf-supply;
+	/delete-property/ cam_vana-supply;
+	/delete-property/ cam_vdig-supply;
+	/delete-property/ cam_vio-supply;
+
+	gpio-custom1 = <2>;
+	gpio-req-tbl-flags = <1 0 0>;
+	gpio-req-tbl-label = "CAMIF_MCLK2", "CAM_RESET2", "CAM_VIO2";
+	gpio-req-tbl-num = <0 1 2>;
+	gpios = <&tlmm 0x1f 0>,
+		<&tlmm 0x24 0>,
+		<&tlmm 0x26 0>;
+	regulator-names = "cam_clk";
+	rgltr-load-current = <0>;
+	rgltr-max-voltage = <0>;
+	rgltr-min-voltage = <0>;
+};
+
+&cam_cci1 {
+	qcom,cam-sensor1 {
+		/delete-property/ actuator-src;
+		/delete-property/ cam_vaf-supply;
+		/delete-property/ cam_vana-supply;
+		/delete-property/ cam_vdig-supply;
+		/delete-property/ cam_vio-supply;
+
+		clock-rates = <24000000>;
+		gpio-custom1 = <2>;
+		gpio-req-tbl-flags = <1 0 0>;
+		gpio-req-tbl-label = "CAMIF_MCLK2", "CAM_RESET2", "CAM_VIO2";
+		gpio-req-tbl-num = <0 1 2>;
+		gpios = <&tlmm 31 0>,
+			<&tlmm 36 0>,
+			<&tlmm 38 0>;
+		regulator-names = "cam_clk";
+		rgltr-load-current = <0>;
+		rgltr-max-voltage = <0>;
+		rgltr-min-voltage = <0>;
+		sensor-position-roll = <90>;
+	};
+
+	qcom,cam-sensor2 {
+		/delete-property/ cam_vana-supply;
+		/delete-property/ cam_vdig-supply;
+		/delete-property/ cam_vio-supply;
+
+		gpio-custom1 = <2>;
+		gpio-req-tbl-flags = <1 0 0>;
+		gpio-req-tbl-label = "CAMIF_MCLK3", "CAM_RESET3", "CAM_VIO";
+		gpio-req-tbl-num = <0 1 2>;
+		gpios = <&tlmm 0x20 0>,
+			<&tlmm 0x25 0>,
+			<&tlmm 0x26 0>;
+		regulator-names = "cam_clk";
+		rgltr-load-current = <0>;
+		rgltr-max-voltage = <0>;
+		rgltr-min-voltage = <0>;
+	};
+};
+
+&qupv3_se10_i2c {
+	wl2866d@28 {
+		compatible = "xiaomi,wl2866d";
+		en-gpio = <&tlmm 33 0>;
+		reg = <0x28>;
+		vin1-supply = <&S6A>;
+		vin1-voltage-level = <1350000 1350000>;
+		status = "ok";
+	};
+};
