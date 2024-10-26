@@ -7,3 +7,4 @@
 #include "moonstone-memory.dts"
 #include "moonstone-nfc.dts"
 #include "moonstone-pinctrl.dts"
+#include "moonstone-pmic.dts"
