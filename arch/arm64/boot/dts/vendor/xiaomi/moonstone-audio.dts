@@ -1,0 +1,84 @@
+/ {
+	si_pa_L: si_pa.0 {
+		compatible = "si,sia81xx";
+		si,si_pa_type = "sia8159";
+		si,si_pa_disable_pin = <1>;
+		timer_task_hdl = <0>;
+		channel_num = <0>;
+		owi_mode = <1>;
+		en_x_filter = <0>;
+		en_dynamic_updata_vdd = <0>;
+		dynamic_updata_vdd_port = <45106>;
+	};
+};
+
+&holi_snd {
+	qcom,audio-routing =
+		"AMIC1", "Analog Mic1",
+		"Analog Mic1", "MIC BIAS1",
+		"AMIC2", "Analog Mic2",
+		"Analog Mic2", "MIC BIAS2",
+		"AMIC3", "Analog Mic3",
+		"Analog Mic3", "MIC BIAS3",
+		/*
+		"AMIC4", "Analog Mic4",
+		"Analog Mic4", "MIC BIAS3",
+		*/
+		"TX DMIC0", "Digital Mic0",
+		"TX DMIC0", "MIC BIAS1",
+		"TX DMIC1", "Digital Mic1",
+		"TX DMIC1", "MIC BIAS1",
+		"TX DMIC2", "Digital Mic2",
+		"TX DMIC2", "MIC BIAS3",
+		"TX DMIC3", "Digital Mic3",
+		"TX DMIC3", "MIC BIAS3",
+		"IN1_HPHL", "HPHL_OUT",
+		"IN2_HPHR", "HPHR_OUT",
+		"IN3_AUX", "AUX_OUT",
+		"RX_TX DEC0_INP", "TX DEC0 MUX",
+		"RX_TX DEC1_INP", "TX DEC1 MUX",
+		"RX_TX DEC2_INP", "TX DEC2 MUX",
+		"RX_TX DEC3_INP", "TX DEC3 MUX",
+		/*
+		"SpkrMono WSA_IN", "AUX",
+		*/
+		"TX SWR_INPUT", "WCD_TX_OUTPUT",
+		"VA SWR_INPUT", "VA_SWR_CLK",
+		"VA SWR_INPUT", "WCD_TX_OUTPUT",
+		"VA_AIF1 CAP", "VA_SWR_CLK",
+		"VA_AIF2 CAP", "VA_SWR_CLK",
+		"VA_AIF3 CAP", "VA_SWR_CLK",
+		"VA DMIC0", "Digital Mic0",
+		"VA DMIC1", "Digital Mic1",
+		"VA DMIC2", "Digital Mic2",
+		"VA DMIC3", "Digital Mic3",
+		"VA DMIC4", "Digital Mic4",
+		"VA DMIC5", "Digital Mic5",
+		"VA DMIC0", "VA MIC BIAS1",
+		"VA DMIC1", "VA MIC BIAS1",
+		"VA DMIC2", "VA MIC BIAS3",
+		"VA DMIC3", "VA MIC BIAS3";
+	si,sia81xx-max-num = <1>;
+	si,sia81xx-aux-devs = <988>;
+	si,sia81xx-aux-devs-prefix = "SpkrLeft";
+};
+
+&qupv3_se10_i2c {
+	sipa_i2c@29 {
+		compatible = "si,sia81xx-i2c";
+		reg = <0x29>;
+		si,sipa-dev = <&si_pa_L>;
+	};
+};
+
+&wsa881x_analog_reset_gpio {
+	status = "disabled";
+};
+
+&wsa881x_i2c_e {
+	status = "disabled";
+};
+
+&wcd937x_codec {
+	qcom,cdc-micbias2-mv = <2200>;
+};

@@ -1,1 +1,2 @@
 #include "../qcom/blair-qrd-nopmi.dts"
+#include "moonstone-audio.dts"
