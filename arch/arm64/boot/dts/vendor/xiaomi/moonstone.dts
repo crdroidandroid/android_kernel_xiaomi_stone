@@ -12,3 +12,9 @@
 #include "moonstone-thermal.dts"
 #include "moonstone-touchscreen.dts"
 #include "moonstone-vibrator.dts"
+
+&qcom {
+	/delete-property/ mem-type;
+	pmsg-size = <0x100000>;
+	console-size = <0x100000>;
+};
