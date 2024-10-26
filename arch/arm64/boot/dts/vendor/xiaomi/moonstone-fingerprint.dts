@@ -1,3 +1,49 @@
+&tlmm {
+	fpc_reset_int {
+		fpc_int_low: int_low {
+			mux {
+				function = "gpio";
+				pins = "gpio17";
+			};
+
+			config {
+				bias-pull-down;
+				drive-strength = <2>;
+				input-enable;
+				pins = "gpio17";
+			};
+		};
+
+		fpc_reset_high: reset_high {
+			mux {
+				function = "gpio";
+				pins = "gpio18";
+			};
+
+			config {
+				bias-disable;
+				drive-strength = <2>;
+				output-high;
+				pins = "gpio18";
+			};
+		};
+
+		fpc_reset_low: reset_low {
+			mux {
+				function = "gpio";
+				pins = "gpio18";
+			};
+
+			config {
+				bias-disable;
+				drive-strength = <2>;
+				output-low;
+				pins = "gpio18";
+			};
+		};
+	};
+};
+
 &soc {
     goodix_fp {
 	    compatible = "goodix,fingerprint";
@@ -6,6 +52,21 @@
 		interrupt-parent = <&tlmm>;
 		interrupts = <17 0>;
 		power_enable = <&tlmm 12 0>;
+		status = "ok";
+	};
+
+	fpc1020 {
+		compatible = "fpc,fpc1020";
+		fpc,enable-on-boot;
+		fpc,gpio_irq = <&tlmm 17 0>;
+		fpc,gpio_rst = <&tlmm 18 0>;
+		fpc,gpio_vdd = <&tlmm 12 0>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <17 0>;
+		pinctrl-0 = <&fpc_reset_low>;
+		pinctrl-1 = <&fpc_reset_high>;
+		pinctrl-2 = <&fpc_int_low>;
+		pinctrl-names = "fpc1020_reset_reset", "fpc1020_reset_active", "fpc1020_irq_active";
 		status = "ok";
 	};
 };
