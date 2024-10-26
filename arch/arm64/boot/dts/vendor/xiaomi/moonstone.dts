@@ -1,3 +1,4 @@
 #include "../qcom/blair-qrd-nopmi.dts"
 #include "moonstone-audio.dts"
 #include "moonstone-camera.dts"
+#include "moonstone-consumerir.dts"
