@@ -10,3 +10,4 @@
 #include "moonstone-pmic.dts"
 #include "moonstone-regulator.dts"
 #include "moonstone-thermal.dts"
+#include "moonstone-touchscreen.dts"

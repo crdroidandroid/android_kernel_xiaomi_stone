@@ -1,0 +1,17 @@
+&qupv3_se8_i2c {
+	focaltech@38 {
+		/delete-property/ focaltech,power-always-on;
+		/delete-property/ vcc_i2c-supply;
+		/delete-property/ vdd-supply;
+
+		compatible = "focaltech,fts";
+		panel = <&dsi_m17_38_0c_0a_fhd_dsc_video
+			&dsi_m17_k6s_38_0c_0a_fhd_dsc_video>;
+		interrupts = <22 2>;
+		focaltech,reset-gpio = <&tlmm 21 1>;
+		focaltech,irq-gpio = <&tlmm 22 2>;
+		focaltech,avdd-gpio = <&tlmm 49 0>;
+		focaltech,max-touch-number = <10>;
+		focaltech,display-coords = <0 0 10800 24000>;
+	};
+};
