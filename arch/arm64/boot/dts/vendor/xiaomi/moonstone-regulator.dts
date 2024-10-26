@@ -1,0 +1,21 @@
+&L12A {
+	qcom,init-voltage = <1800000>;
+	regulator-always-on;
+};
+
+&L13A {
+	/delete-property/ qcom,proxy-consumer-enable;
+};
+
+&L15A {
+	qcom,init-voltage = <2700000>;
+	regulator-always-on;
+};
+
+&L21A {
+	regulator-always-on;
+};
+
+&L7E {
+	regulator-max-microvolt = <3300000>;
+};

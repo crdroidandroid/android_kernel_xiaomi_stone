@@ -8,3 +8,4 @@
 #include "moonstone-nfc.dts"
 #include "moonstone-pinctrl.dts"
 #include "moonstone-pmic.dts"
+#include "moonstone-regulator.dts"
