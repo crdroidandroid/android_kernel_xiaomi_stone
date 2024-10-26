@@ -1,0 +1,11 @@
+&soc {
+    goodix_fp {
+	    compatible = "goodix,fingerprint";
+		fp-gpio-irq = <&tlmm 17 0>;
+		fp-gpio-reset = <&tlmm 18 0>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <17 0>;
+		power_enable = <&tlmm 12 0>;
+		status = "ok";
+	};
+};

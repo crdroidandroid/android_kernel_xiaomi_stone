@@ -3,3 +3,4 @@
 #include "moonstone-camera.dts"
 #include "moonstone-consumerir.dts"
 #include "moonstone-display.dts"
+#include "moonstone-fingerprint.dts"
