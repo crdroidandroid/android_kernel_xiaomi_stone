@@ -6,3 +6,4 @@
 #include "moonstone-fingerprint.dts"
 #include "moonstone-memory.dts"
 #include "moonstone-nfc.dts"
+#include "moonstone-pinctrl.dts"
