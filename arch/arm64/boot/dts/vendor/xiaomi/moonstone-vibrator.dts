@@ -1,0 +1,42 @@
+&tlmm {
+	vib_ldo_active {
+		vib_ldo_active: vib_ldo_active {
+			mux {
+				pins = "gpio100";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio100";
+				drive-strength = <0x02>;
+				bias-pull-up;
+			};
+		};
+	};
+
+	vib_ldo_suspend {
+		vib_ldo_suspend: vib_ldo_suspend {
+			mux {
+				pins = "gpio100";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio100";
+				drive-strength = <0x02>;
+				bias-pull-down;
+			};
+		};
+	};
+};
+
+&soc {
+	vibrator {
+		compatible = "qcom,qpnp-vibrator-ldo-v2";
+		pinctrl-0 = <&vib_ldo_active>;
+		pinctrl-1 = <&vib_ldo_suspend>;
+		pinctrl-names = "vib_ldo_active", "vib_ldo_suspend";
+		qcom,disable-overdrive;
+		status = "ok";
+	};
+};

@@ -11,3 +11,4 @@
 #include "moonstone-regulator.dts"
 #include "moonstone-thermal.dts"
 #include "moonstone-touchscreen.dts"
+#include "moonstone-vibrator.dts"
