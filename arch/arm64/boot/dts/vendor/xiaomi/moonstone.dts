@@ -4,3 +4,4 @@
 #include "moonstone-consumerir.dts"
 #include "moonstone-display.dts"
 #include "moonstone-fingerprint.dts"
+#include "moonstone-memory.dts"
