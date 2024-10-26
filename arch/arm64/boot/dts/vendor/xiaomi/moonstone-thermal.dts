@@ -1,0 +1,16 @@
+&thermal_zones {
+	quiet-therm-step {
+		disable-thermal-zone;
+		status = "disabled";
+	};
+
+	pa-therm0-step {
+		disable-thermal-zone;
+		status = "disabled";
+	};
+
+	xo-therm-step {
+		disable-thermal-zone;
+		status = "disabled";
+	};
+};
