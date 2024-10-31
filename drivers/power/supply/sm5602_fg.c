@@ -775,6 +775,75 @@ static int fg_read_current(struct sm_fg_chip *sm)
 	return curr;
 }
 
+static int read_fcc_form_cycle_count(struct sm_fg_chip *sm)
+{
+	int ret = 0;
+	int cycle_count = 0;
+
+	if(sm->fake_cycle_count > 0)
+		cycle_count = sm->fake_cycle_count;
+	else
+		cycle_count = sm->batt_soc_cycle;
+
+	if (sm->batt_id == SECOND_SUPPLIER) {
+		if (cycle_count == -100 || cycle_count < 0) {
+			ret = 0;
+		} else if (cycle_count < 900) {
+			if (cycle_count < 100) {
+				ret = 4900;
+			} else if (cycle_count < 200) {
+				ret = 4860;
+			} else if (cycle_count < 300) {
+				ret = 4802;
+			} else if (cycle_count < 400) {
+				ret = 4752;
+			} else if (cycle_count < 500) {
+				ret = 4714;
+			} else if (cycle_count < 600) {
+				ret = 4669;
+			} else if (cycle_count < 700) {
+				ret = 4631;
+			} else {
+				ret = 4587;
+				if (cycle_count > 700) {
+					ret = 4559;
+				}
+			}
+		} else {
+			ret = 4559;
+		}
+	} else {
+		if (cycle_count == -100 || cycle_count < 0) {
+			ret = 0;
+		} else if (cycle_count < 900) {
+			if (cycle_count < 100) {
+				ret = 4900;
+			} else if (cycle_count < 200) {
+				ret = 4846;
+			} else if (cycle_count < 300) {
+				ret = 4765;
+			} else if (cycle_count < 400) {
+				ret = 4691;
+			} else if (cycle_count < 500) {
+				ret = 4642;
+			} else if (cycle_count < 600) {
+				ret = 4595;
+			} else {
+				if (cycle_count < 700) {
+					ret = 4506;
+				} else if (cycle_count > 700) {
+					ret = 4467;
+				} else {
+					ret = 4560;
+				}
+			}
+		} else {
+			ret = 4467;
+		}
+	}
+	return ret;
+}
+
 static int fg_read_fcc(struct sm_fg_chip *sm)
 {
 	int ret = 0;
@@ -1541,17 +1610,19 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 		break;
 
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
-		ret = fg_read_fcc(sm);
+		ret = read_fcc_form_cycle_count(sm);
 		mutex_lock(&sm->data_lock);
 		if (ret > 0)
 			sm->batt_fcc = ret;
+		else
+			ret = sm->batt_fcc;
 		val->intval = sm->batt_fcc * 1000; //uAh
 		mutex_unlock(&sm->data_lock);
 		break;
 
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		//val->intval = fg_read_fcc(sm) * 1000; //uAh
-		val->intval = 5000 * 1000; //uAh : Fixed 5000mAh
+		val->intval = 4900 * 1000; //uAh : Fixed 4900mAh
 		break;
 
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
