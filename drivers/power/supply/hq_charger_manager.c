@@ -214,7 +214,7 @@ static int batt_get_battery_full(struct batt_chg *chg, int* charge_full)
 		return -1;
 	}
 	rc = power_supply_get_property(chg->fg_psy, POWER_SUPPLY_PROP_CHARGE_FULL, &pval);
-	*charge_full = 4900000;
+	*charge_full = pval.intval;
 	return rc;
 }
 
@@ -227,7 +227,7 @@ static int batt_get_battery_full_design(struct batt_chg *chg, int* charge_full_d
 		return -1;
 	}
 	rc = power_supply_get_property(chg->fg_psy, POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN, &pval);
-	*charge_full_design = 4900000;
+	*charge_full_design = pval.intval;
 	return rc;
 }
 
