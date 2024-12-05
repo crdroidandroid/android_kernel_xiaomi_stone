@@ -22,7 +22,7 @@
 #include <linux/random.h>
 
 #ifdef CONFIG_BUILD_QGKI
-#include "hqsys_pcba.h"
+#include <misc/hqsys_pcba.h>
 #include "w1_slg.h"
 #endif
 
@@ -52,7 +52,6 @@ static int slg_remove(struct platform_device *pdev);
 bool slg_Auth_Result_b;
 #ifdef CONFIG_BUILD_QGKI
 extern int authenticate_battery(void);
-extern PCBA_CONFIG get_huaqin_pcba_config(void);
 #endif
 struct mutex slg_cmd_lock;
 struct slg_data {

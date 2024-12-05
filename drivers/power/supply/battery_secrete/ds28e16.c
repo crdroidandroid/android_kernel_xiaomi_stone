@@ -17,10 +17,10 @@
 #include <linux/fs.h>
 #include <linux/delay.h>
 #include <linux/string.h>
+#include <misc/hqsys_pcba.h>
 #include "sha384_software.h"
 #include "ds28e16.h"
 #include "onewire_gpio.h"
-#include "hqsys_pcba.h"
 
 #include <linux/param.h>
 #include <linux/jiffies.h>
@@ -54,10 +54,6 @@ static const char *battery_id_name[] = {
 #endif
 
 struct mutex ds_cmd_lock;
-
-#ifdef CONFIG_BUILD_QGKI
-extern PCBA_CONFIG get_huaqin_pcba_config(void);
-#endif
 
 struct ds28e16_data {
 	struct platform_device *pdev;

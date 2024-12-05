@@ -20,7 +20,7 @@
 #include <linux/list.h>
 #include <linux/device.h>
 #include <linux/spinlock.h>
-#include "hqsys_pcba.h"
+#include <misc/hqsys_pcba.h>
 
 #define ow_info	pr_info
 #define ow_dbg	pr_debug
@@ -40,10 +40,6 @@
 #define ONE_WIRE_CONFIG_IN		writel_relaxed(GPIO_ENABLE | DRV_STRENGTH_16MA | GPIO_INPUT | GPIO_PULL_UP, g_onewire_data->gpio_cfg66_reg)// IN
 #define ONE_WIRE_OUT_HIGH		writel_relaxed(OUTPUT_HIGH, g_onewire_data->gpio_in_out_reg)// OUT: 1
 #define ONE_WIRE_OUT_LOW		writel_relaxed(OUTPUT_LOW, g_onewire_data->gpio_in_out_reg)// OUT: 0
-
-#ifdef CONFIG_BUILD_QGKI
-extern PCBA_CONFIG get_huaqin_pcba_config(void);
-#endif
 
 struct onewire_gpio_data {
 	struct platform_device *pdev;
