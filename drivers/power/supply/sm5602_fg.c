@@ -790,55 +790,55 @@ static int read_fcc_form_cycle_count(struct sm_fg_chip *sm)
 			ret = 0;
 		} else if (cycle_count < 900) {
 			if (cycle_count < 100) {
-				ret = 4900;
+				ret = 5000;
 			} else if (cycle_count < 200) {
-				ret = 4860;
+				ret = 4960;
 			} else if (cycle_count < 300) {
-				ret = 4802;
+				ret = 4902;
 			} else if (cycle_count < 400) {
-				ret = 4752;
+				ret = 4852;
 			} else if (cycle_count < 500) {
-				ret = 4714;
+				ret = 4812;
 			} else if (cycle_count < 600) {
-				ret = 4669;
+				ret = 4766;
 			} else if (cycle_count < 700) {
-				ret = 4631;
+				ret = 4730;
 			} else {
-				ret = 4587;
+				ret = 4653;
 				if (cycle_count > 700) {
-					ret = 4559;
+					ret = 4653;
 				}
 			}
 		} else {
-			ret = 4559;
+			ret = 4653;
 		}
 	} else {
 		if (cycle_count == -100 || cycle_count < 0) {
 			ret = 0;
 		} else if (cycle_count < 900) {
 			if (cycle_count < 100) {
-				ret = 4900;
+				ret = 5000;
 			} else if (cycle_count < 200) {
-				ret = 4846;
+				ret = 4959;
 			} else if (cycle_count < 300) {
-				ret = 4765;
+				ret = 4866;
 			} else if (cycle_count < 400) {
-				ret = 4691;
+				ret = 4790;
 			} else if (cycle_count < 500) {
-				ret = 4642;
+				ret = 4741;
 			} else if (cycle_count < 600) {
-				ret = 4595;
+				ret = 4694;
 			} else {
 				if (cycle_count < 700) {
-					ret = 4506;
+					ret = 4592;
 				} else if (cycle_count > 700) {
-					ret = 4467;
+					ret = 4558;
 				} else {
-					ret = 4560;
+					ret = 4653;
 				}
 			}
 		} else {
-			ret = 4467;
+			ret = 4558;
 		}
 	}
 	return ret;
@@ -1622,7 +1622,7 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		//val->intval = fg_read_fcc(sm) * 1000; //uAh
-		val->intval = 4900 * 1000; //uAh : Fixed 4900mAh
+		val->intval = 5000 * 1000; //uAh : Fixed 5000mAh
 		break;
 
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
