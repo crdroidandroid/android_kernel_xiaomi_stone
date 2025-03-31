@@ -30,7 +30,7 @@
 		qcom,esd-err-irq-gpio = <&tlmm 97 0x2002>;
 		qcom,mdss-dsi-pan-enable-dynamic-fps;
 		qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_vfp";
-		qcom,dsi-supported-dfps-list = <120 90 60>;
+		qcom,dsi-supported-dfps-list = <120 60>;
 		mi,mdss-dsi-doze-hbm-brightness-value = <272>;
 		mi,mdss-dsi-doze-lbm-brightness-value = <22>;
 		qcom,mdss-dsi-oled-panel-video-mode;
