@@ -393,7 +393,6 @@ static int batt_psy_get_prop(struct power_supply *psy,
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_NOW:
 		rc = batt_get_battery_current_uA(chg, &pval->intval);
-		pval->intval = pval->intval/1000;
 		break;
 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		rc = batt_get_battery_constant_current(chg, &pval->intval);
