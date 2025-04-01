@@ -410,6 +410,7 @@ static int batt_psy_get_prop(struct power_supply *psy,
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		rc = batt_get_charge_counter(chg, &pval->intval);
+		pval->intval *= 1000;
 		break;
 	case POWER_SUPPLY_PROP_CYCLE_COUNT:
 		rc = batt_get_battery_cycle_count(chg, &pval->intval);
