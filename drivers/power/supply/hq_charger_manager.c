@@ -279,6 +279,54 @@ static int batt_get_batt_verify_state(struct batt_chg *chg)
 	return rc;
 }
 
+static int batt_get_time_to_full(struct batt_chg *chg, int *time_to_full)
+{
+    int rc = 0;
+    int charge_now_uAh = -1;
+    int charge_full_uAh = 0;
+    int current_now_uA = 0;
+    int delta_uAh = 0;
+    int capacity = -1;
+
+    if (!chg->fg_psy) {
+        pr_err("charge manager %s:%d, cannot find fg_psy\n", __func__, __LINE__);
+        return -ENODEV;
+    }
+
+    rc = batt_get_battery_current_uA(chg, &current_now_uA);
+    if (rc || current_now_uA >= 0) {
+        *time_to_full = 0;
+        return 0;
+    }
+
+    current_now_uA = abs(current_now_uA);
+
+    rc = batt_get_battery_full(chg, &charge_full_uAh);
+    if (rc)
+        return rc;
+
+    rc = batt_get_charge_counter(chg, &charge_now_uAh);
+    if (rc || charge_now_uAh < 0) {
+        rc = batt_get_battery_capacity(chg, &capacity);
+        if (rc || capacity < 0 || capacity > 100) {
+            *time_to_full = 0;
+            return rc;
+        }
+
+        delta_uAh = (charge_full_uAh * (100 - capacity)) / 100;
+    } else {
+        delta_uAh = charge_full_uAh - charge_now_uAh;
+        if (delta_uAh <= 0) {
+            *time_to_full = 0;
+            return 0;
+        }
+    }
+
+    *time_to_full = ((delta_uAh * 3600) / current_now_uA) * 10;
+
+    return 0;
+}
+
 /*+++++++++++++++++++++ end +++++++++++++++++++++*/
 
 /*+++++++++++++++++++++ sw api add here +++++++++++++++++++++*/
@@ -425,6 +473,8 @@ static int batt_psy_get_prop(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+		rc = batt_get_time_to_full(chg, &pval->intval);
+		break;
 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
 		break;
 	default:
