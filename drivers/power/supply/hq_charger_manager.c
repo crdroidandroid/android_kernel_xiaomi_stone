@@ -420,6 +420,13 @@ static int batt_psy_get_prop(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		rc = batt_get_battery_full_design(chg, &pval->intval);
 		break;
+	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
+		break;
 	default:
 		pr_err("batt power supply prop %d not supported\n", psp);
 		rc = -EINVAL;
