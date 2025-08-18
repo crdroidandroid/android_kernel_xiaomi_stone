@@ -279,51 +279,94 @@ static int batt_get_batt_verify_state(struct batt_chg *chg)
 	return rc;
 }
 
+/* Persistent state for smoothing */
+static s64 last_eta_sec = -1;          /* seconds */
+static s64 avg_current_uA = 0;         /* EMA / SMA accumulator */
+#define CURR_FILTER_DEPTH 5            /* simple moving average depth */
+
 static int batt_get_time_to_full(struct batt_chg *chg, int *time_to_full)
 {
-    int rc = 0;
-    int charge_now_uAh = -1;
-    int charge_full_uAh = 0;
-    int current_now_uA = 0;
-    int delta_uAh = 0;
-    int capacity = -1;
+    int rc;
+    int capacity_pct = -1;
+    int full_uAh_i = 0;
+    int current_now_uA_i = 0;
+    s64 full_uAh, current_uA, remaining_uAh, eta_sec;
 
-    if (!chg->fg_psy) {
-        pr_err("charge manager %s:%d, cannot find fg_psy\n", __func__, __LINE__);
+    *time_to_full = 0;
+
+    if (!chg || !chg->fg_psy)
         return -ENODEV;
-    }
 
-    rc = batt_get_battery_current_uA(chg, &current_now_uA);
-    if (rc || current_now_uA >= 0) {
-        *time_to_full = 0;
-        return 0;
-    }
-
-    current_now_uA = abs(current_now_uA);
-
-    rc = batt_get_battery_full(chg, &charge_full_uAh);
+    rc = batt_get_battery_current_uA(chg, &current_now_uA_i);
     if (rc)
-        return rc;
+        return 0;
 
-    rc = batt_get_charge_counter(chg, &charge_now_uAh);
-    if (rc || charge_now_uAh < 0) {
-        rc = batt_get_battery_capacity(chg, &capacity);
-        if (rc || capacity < 0 || capacity > 100) {
-            *time_to_full = 0;
-            return rc;
-        }
+    /* Assume charging current is negative; flip if your FG is opposite */
+    if (current_now_uA_i >= 0)
+        return 0;
 
-        delta_uAh = (charge_full_uAh * (100 - capacity)) / 100;
-    } else {
-        delta_uAh = charge_full_uAh - charge_now_uAh;
-        if (delta_uAh <= 0) {
-            *time_to_full = 0;
-            return 0;
-        }
+    current_uA = -(s64)current_now_uA_i; /* make positive */
+
+    /* Ignore tiny taper currents (<50mA) */
+    if (current_uA < 50000)
+        return 0;
+
+    /* Smooth current (SMA) in 64-bit */
+    if (avg_current_uA <= 0)
+        avg_current_uA = current_uA;
+    else
+        avg_current_uA = (avg_current_uA * (CURR_FILTER_DEPTH - 1) + current_uA) / CURR_FILTER_DEPTH;
+
+    current_uA = avg_current_uA;
+
+    /* Get SOC in % */
+    rc = batt_get_battery_capacity(chg, &capacity_pct);
+    if (rc || capacity_pct < 0 || capacity_pct >= 100)
+        return 0;
+
+    /* Get usable full capacity (expected uAh) */
+    rc = batt_get_battery_full(chg, &full_uAh_i);
+    if (rc || full_uAh_i <= 0)
+        return 0;
+
+    full_uAh = (s64)full_uAh_i;
+
+    /*
+     * Sanity: typical 5,000mAh battery -> around 5,000,000uAh.
+     * If the driver returned mAh, convert it.
+     */
+    if (full_uAh < 100000) {
+        /* Looks like mAh; convert to uAh */
+        full_uAh *= 1000;
     }
 
-    *time_to_full = ((delta_uAh * 3600) / current_now_uA) * 10;
+    remaining_uAh = (full_uAh * (100 - capacity_pct)) / 100;
 
+    if (remaining_uAh <= 0)
+        return 0;
+
+    /* time(s) = (uAh / uA) * 3600, all in 64-bit */
+    eta_sec = div_s64(remaining_uAh * 3600, current_uA);
+
+    /* Clamp to plausible bounds */
+    if (eta_sec < 0)
+        eta_sec = 0;
+    if (eta_sec > 24LL * 3600)
+        eta_sec = 0;
+
+    /* Smooth ETA output to reduce jumps */
+    if (last_eta_sec >= 0) {
+        s64 diff = eta_sec - last_eta_sec;
+        if (diff > 300)        /* more than +5min jump */
+            eta_sec = last_eta_sec + diff / 2;
+        else if (diff < -300)  /* more than -5min jump */
+            eta_sec = last_eta_sec + diff / 2;
+        else
+            eta_sec = (last_eta_sec * 3 + eta_sec) / 4; /* 75% old, 25% new */
+    }
+
+    last_eta_sec = eta_sec;
+    *time_to_full = (int)eta_sec;
     return 0;
 }
 
