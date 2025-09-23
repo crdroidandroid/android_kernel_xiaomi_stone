@@ -1563,7 +1563,7 @@ static int fg_get_property(struct power_supply *psy, enum power_supply_property 
 			else
 				val->intval = (int) val->intval*4900/4570;
 			*/
-			val->intval = (int) val->intval;
+			val->intval = (int) val->intval * 1000;
 			ret = 0;
 		}
 		else
